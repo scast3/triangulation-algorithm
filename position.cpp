@@ -1,7 +1,7 @@
 #include <vector>
 #include <cmath>
 
-struct coordinate
+struct coordinate // this is wrong, radar works with polar coordinates
 {
     double x, y, z;
 };
