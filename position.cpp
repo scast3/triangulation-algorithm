@@ -1,5 +1,6 @@
 #include <vector>
 #include <cmath>
+#include <setup.h>
 
 struct cart
 {
@@ -10,21 +11,6 @@ struct polar
 {
     double rho, theta, phi;
 };
-
-cart receiver_abs_location(cart reference, polar receiver_rel_location)
-{
-    cart receiver_absolute;
-
-    double x_rel = receiver_rel_location.rho * sin(receiver_rel_location.phi) * cos(receiver_rel_location.theta);
-    double y_rel = receiver_rel_location.rho * sin(receiver_rel_location.phi) * sin(receiver_rel_location.theta);
-    double z_rel = receiver_rel_location.rho * cos(receiver_rel_location.phi);
-
-    receiver_absolute.x = reference.x + x_rel;
-    receiver_absolute.y = reference.y + y_rel;
-    receiver_absolute.z = reference.z + z_rel;
-
-    return receiver_absolute;
-}
 
 double euclidian(cart p1, cart p2)
 {
@@ -47,11 +33,5 @@ cart triangulatePosition(cart reference, cart nozzle, const std::vector<cart> &r
 
 int main()
 {
-    cart reference = {0, 0, 0};                                          // assuming ref is at coord 0,0,0
-    cart nozzle = {5, 5, 5};                                             // initial nozzle position
-    std::vector<cart> receivers = {{1, 1, 1}, {10, 10, 10}, {5, 10, 5}}; // 3 reciervers with different cartesian_coords
-
-    cart nozzle_position = triangulatePosition(reference, nozzle, receivers);
-
     return 0;
 }
