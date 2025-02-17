@@ -12,7 +12,7 @@
 coord path[G_SAMPLES];
 coord pred[G_SAMPLES]; // predicted values from the algorithm
 
-int delta_t = 0; // keeping track of each discrete time interval
+int index = 0; // keeping track of each discrete time interval
 
 // rfid tag positions
 coord tag1 = {3.0, 4.0};
@@ -47,14 +47,19 @@ double getRSSI(){
     return 0.0;
 }
 
+coord iterate(coord initalGuess){
+
+    return {0.0, 0.0};
+}
+
 int main(){
 
     for (;;){
-        
+        coord pathLocation = path[index];
+
     
 
-        delta_t++; // increment time interval every iteration
+        index++; // increment time interval every iteration
     }
-    printf("hello world");
     return 0;
 }
