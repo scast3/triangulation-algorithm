@@ -1,0 +1,3 @@
+[submodule "sllurp"]
+	path = sllurp
+	url = https://github.com/ransford/sllurp.git
