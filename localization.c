@@ -14,7 +14,7 @@ coord pred[G_SAMPLES]; // predicted values from the algorithm
 
 int index = 0; // keeping track of each discrete time interval
 
-// rfid tag positions
+// rfid tag positions (this will be hardcoded)
 coord tag1 = {3.0, 4.0};
 coord tag2 = {9.0, 1.0};
 coord tag2 = {9.0, 7.0};
