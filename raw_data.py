@@ -67,7 +67,7 @@ def convert_to_dist(filename, tags, coeffs_a1, coeffs_a2, coeffs_a3):
             
 
 
-    #result["Timestamp"] = pd.to_datetime(data["Timestamp"], format="%Y-%m-%d %H:%M:%S.%f")
+    result["Timestamp"] = pd.to_datetime(data["Timestamp"])
     return result
 
 
