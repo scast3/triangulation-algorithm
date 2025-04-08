@@ -29,8 +29,50 @@ def create_df(testname):
     return raw_df
 
 
-def convert_to_dist(some_df, rssi_0, n):
-    some_df["Distance"] = 10**((rssi_0 - some_df["RSSI"])/(10*n)) 
+def regression(filename):
+    
+    data = pd.read_csv(filename)
+    data = data.dropna()
+
+    a1 = data[['Actual Distance', 'A1 Filtered RSSI']].copy()
+    a2 = data[['Actual Distance', 'A2 Filtered RSSI']].copy()
+    a3 = data[['Actual Distance', 'A3 Filtered RSSI']].copy()
+
+    coeffs_a1 = np.polyfit(a1['A1 Filtered RSSI'], a1['Actual Distance'], 2)
+    coeffs_a2 = np.polyfit(a2['A2 Filtered RSSI'], a2['Actual Distance'], 2)
+    coeffs_a3 = np.polyfit(a3['A3 Filtered RSSI'], a3['Actual Distance'], 2)
+
+    return coeffs_a1, coeffs_a2, coeffs_a3
+
+
+def convert_to_dist(filename, tags, coeffs_a1, coeffs_a2, coeffs_a3):
+    data = create_df(filename)
+    result = pd.DataFrame()
+    for index, row in data.iterrows():
+        tag = row['EPC']
+        if tag in tags:
+            if row['Antenna'] == 'A1':
+                coeffs = coeffs_a1
+            elif row['Antenna'] == 'A2':
+                coeffs = coeffs_a2
+            elif row['Antenna'] == 'A3':
+                coeffs = coeffs_a3
+            else:
+                continue
+
+            rssi = row['RSSI']
+            distance = np.polyval(coeffs, rssi)
+            row['Distance'] = distance
+
+            result = result.append(row, ignore_index=True)
+            
+
+
+    result["Timestamp"] = pd.to_datetime(data["Timestamp"], format="%Y-%m-%d %H:%M:%S.%f")
+    return result
+
+
+
 
 def smooth(some_df, window_size, variable, print_stats = False, show_graph = False, distance = None):
     some_df[f"Norm_{variable}"] = some_df[variable].rolling(window=window_size).mean()
