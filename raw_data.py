@@ -51,11 +51,11 @@ def convert_to_dist(filename, tags, coeffs_a1, coeffs_a2, coeffs_a3):
     for index, row in data.iterrows():
         tag = row['EPC']
         if tag in tags:
-            if row['Antenna'] == 'A1':
+            if row['Antenna'] == 1:
                 coeffs = coeffs_a1
-            elif row['Antenna'] == 'A2':
+            elif row['Antenna'] == 2:
                 coeffs = coeffs_a2
-            elif row['Antenna'] == 'A3':
+            elif row['Antenna'] == 3:
                 coeffs = coeffs_a3
             else:
                 continue
@@ -63,12 +63,11 @@ def convert_to_dist(filename, tags, coeffs_a1, coeffs_a2, coeffs_a3):
             rssi = row['RSSI']
             distance = np.polyval(coeffs, rssi)
             row['Distance'] = distance
-
-            result = result.append(row, ignore_index=True)
+            result = pd.concat([result, pd.DataFrame([row])], ignore_index=True)
             
 
 
-    result["Timestamp"] = pd.to_datetime(data["Timestamp"], format="%Y-%m-%d %H:%M:%S.%f")
+    #result["Timestamp"] = pd.to_datetime(data["Timestamp"], format="%Y-%m-%d %H:%M:%S.%f")
     return result
 
 
